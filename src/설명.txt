@@ -1,0 +1,65 @@
+React의 렌더링 프로세스
+- 상태가 변경되면 컴포넌트 함수가 재렌더링되어 새로운 가상 DOM 생성
+- 이전 DOM과 새 가상 DOM을 비교
+- commit : 변경된 부분만 실제 DOM에 반영
+
+리액트의 상태
+- 변경 가능한 데이터 → 변경되면 컴포넌트가 재렌더링되어 UI를 갱신
+  (상태가 아닌 값은 재렌더링될 때 초기화된다)
+- 비동기적으로 업데이트되므로 상태 변경이 즉시 적용되지 않을 수 있다
+  기존 최신값을 가지고 업데이트하려면 함수형 업데이트를 사용
+- 객체/배열 상태를 업데이트하려면 새로운 참조를 생성해야 한다(spread 연산자)
+   setStateObj({ ...stateObj, name: "new" });
+- 상태 끌어올리기(state lifting)
+  여러 컴포넌트가 공유하는 상태는 가장 가까운 공통 부모에
+
+상태 관리 도구
+- 로컬 상태 : useState
+- 클라이언트의 전역 상태(로그인 여부, 아이디 확인 여부) : Context API, Redux, Zustand
+- 서버 상태 : SWR
+
+
+React의 사이드 이펙트
+- 렌더링 : JSX를 직접 리턴하는 코드들
+- 직접 렌더링에 관련되지 않은 것들은 모두 사이드 이펙트로 분류
+  API 요청, DOM 수동 조작, 라우팅 변경, console.log()....
+- 렌더링을 유발하는 코드는 콜백으로 실행예약해야한다(useEffect나 이벤트 핸들러)
+  데이터 fetch 등 상태 변경 코드
+  라우팅을 즉시 변경하는 navigate()
+- 상태를 변경하지 않는 사이드 이펙트는 콜백 처리가 불필요
+  
+그럼 <Navigate >는?
+- <Navigate>는 JSX 컴포넌트로 조건부 렌더링 가능
+
+useEffect와 수명 주기
+- useEffect의 동작 방식은 두 번째 매개변수인 dependency array에 따른다
+- 의존성 배열이 없을 경우 컴포넌트가 렌더링될 때마다 useEffect 실행
+- 의존성 배열이 비어있을 경우([]) 컴포넌트가 최초로 렌더링될 때(mount) 1번만 실행
+- 의존성 배열에 값이 있들 땐 해당 값들 중 어떤 것이라도 변경되면, useEffect 실행
+
+useEffect는 수명 주기별로 실행할 콜백 함수를 등록
+- 등록은 렌더링 중에 발생하지만, 콜백 함수 실행은 렌더링이 끝난 다음 : 사이드 이펙트 처리에 적합
+- useEffect의 콜백 함수는 Promise를 리턴하면 안된다
+  내부적으로 async 함수를 만들어 호출
+
+React Hook "useState" is called conditionally
+- 훅은 조건문, 반복문, 함수 내부에서 호출 금지
+- 훅은 항상 컴포넌트 함수의 최상단에서 호출
+
+
+SWR
+- 훅 형태의 데이터 fetching 라이브러리
+- 데이터 패칭, 캐싱, 업데이트 관리
+- fetcher 함수
+  (url) => fetch(url).then((res) => res.json());
+
+
+PostList에서 useSWR한 다음 자식에게 전달
+PostRead에서 useSWR
+- 글은 스스로 출력, 댓글들은 CommentList에 전달해서 출력
+- CommentWrite에서 댓글을 추가하면 어떻게 CommentList가 갱신되게 할 것인가?
+- PostRead가 캐시하고 있는 post의 comments를 갱신
+
+dangerouslySetInnerHTML
+- 선택자.innerHTML를 대신하는 리액트의 html 출력방법으로 보안에 취약
+- DOMPuryfy : html 코드에서 잠재적인 악성코드를 추적해서 안전하게 소독된(sanitized)버전으로 출력
