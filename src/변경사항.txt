@@ -1,0 +1,4 @@
+- React.memo, useCallback을 가능한 한 적용
+- Paginations의 useEffect를 파생 속성으로 변경
+- 시간이 지속되어 로그인이 풀렸을 때, 로그인이 필요한 기능을 실행하면 401오류가 발생하는 문제점 수정
+    axios 인터셉터에서 401오류를 체크해 authStore에서 로그아웃 처리
