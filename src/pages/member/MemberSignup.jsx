@@ -13,8 +13,6 @@ import {signup} from '../../utils/memberApi';
 import { AsyncStatus } from "../../utils/constants";
 
 function MemberSignup() {
-  console.log("부모 컴포넌트 렌더링...");
-
   // 1. 필요한 기능 가져오기(작성 상태, 프로필/아이디/비밀번호/비밀번호 확인/이메일 커스텀 훅)
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const vProfile = usePhoto();

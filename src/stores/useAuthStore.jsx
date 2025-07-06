@@ -4,21 +4,23 @@ import { getUsername } from '../utils/authApi';
 const useAuthStore = create((set, get) => ({
   // undefined : 아직 체크안 한 상태, null : 비로그인
   username: undefined,
+  role: undefined,
 
   checkAuth: async () => {
     try {
       const res = await getUsername();
-      set(state=>({...state, username:res.data.username }));
+      const {username, role} = res.data;
+      set({username, role});
     } catch (err) {
       if(err.status!==409)
         console.log(err);
-      set(state=>({...state, username: null }));
+      set({username:null, role:null});
     }
   },
 
-  setUsername: (param) => set(state=>({...state, username: param })),
+  setLogin: ({username, role}) => set({username, role}),
 
-  resetUsername: () => set(state=>({...state, username: null }))
+  setLogout: () => set({username:null, role:null})
 }));
 
 export default useAuthStore;

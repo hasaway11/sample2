@@ -8,8 +8,6 @@ import {findUsername} from '../../utils/memberApi';
 import { AsyncStatus } from "../../utils/constants";
 
 function MemberFindUsername() {
-  console.log("부모 컴포넌트 렌더링...");
-  
   // 1. 필요한 기능 가져오기(작성 상태, 이메일 입력 커스텀 훅, 아이디 검색 결과 상태)
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const vEmail = useEmail();

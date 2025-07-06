@@ -12,8 +12,6 @@ import GoodButton from '../../components/post/GoodButton';
 import CommentWrite from '../../components/comment/CommentWrite';
 
 function PostRead() {
-  console.log("부모 컴포넌트 렌더링...");
-  
   // 1. 필요한 기늠 가져오기(라우팅, 커스텀훅, 로그인 이름)
   const navigate = useNavigate();
   const username = useAuthStore(state=>state.username);

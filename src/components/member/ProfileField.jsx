@@ -1,7 +1,6 @@
 import React from "react";
 
 function ProfileField({photoUrl, alt, name, label, onChange}) {
-  console.log("ProfileField");
   return (
      <>
       {photoUrl && <img src={photoUrl} style={{height:'200px', objectFit:'cover'}} alt={alt} />}

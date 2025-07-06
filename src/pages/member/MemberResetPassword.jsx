@@ -8,8 +8,6 @@ import useUsername from "../../hooks/useUsername";
 import { resetPassword } from "../../utils/memberApi";
 
 function MemberResetPassword() {
-  console.log("부모 컴포넌트 렌더링...");
-
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const vUsername = useUsername();
 

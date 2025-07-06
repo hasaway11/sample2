@@ -6,7 +6,6 @@ import { good } from "../../utils/postApi";
 import { AsyncStatus} from '../../utils/constants';
 
 function GoodButton({pno, goodCnt}) {
-  console.log("GoodButton");
   const [status, setStatus] = useState(AsyncStatus.IDLE);
 
   const doGood=async ()=>{

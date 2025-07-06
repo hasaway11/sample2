@@ -12,8 +12,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 function MemberChangePassword() {
-  console.log("부모 컴포넌트 렌더링...");
-  
   // 1. 필요한 기능 가져오기(작성 상태, 비밀번호/새비밀번호/새비밀번호 확인 입력 커스텀훅)
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const vCurrentPassword = usePassword();

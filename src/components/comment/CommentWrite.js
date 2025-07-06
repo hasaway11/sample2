@@ -3,7 +3,6 @@ import { Button, Form } from 'react-bootstrap'
 import useComment from '../../hooks/useComment';
 
 const CommentWrite=({pno})=>{
-  console.log("CommentWrite");
   const vComment = useComment();
   const {value, onChange, onBlur, message, onWrite} = vComment;
 

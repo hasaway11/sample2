@@ -9,8 +9,6 @@ import { readAll } from '../../utils/postApi';
 import { convertToInt } from '../../utils/constants';
 
 function PostList() {
-  console.log("부모 컴포넌트 렌더링...");
-  
   // 1. pageno 파라미터를 읽어와 posts를 fetch
   const [params] = useSearchParams();
   let pageno = convertToInt(params.get('pageno'), 1);

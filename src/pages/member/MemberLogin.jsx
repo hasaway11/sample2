@@ -11,8 +11,6 @@ import { AsyncStatus } from '../../utils/constants';
 import { Alert } from 'react-bootstrap';
 
 function MemberLogin() {
-   console.log("부모 컴포넌트 렌더링...");
-  
   // 1. 필요한 기능 가져오기(작성 상태, 로그인 결과, 이메일과 비밀번호 입력 커스텀 훅, 라우팅)
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const [result, setResult] = useState(0);
@@ -21,7 +19,7 @@ function MemberLogin() {
   const navigate = useNavigate();
 
   // 2. 로그인에 성공했을 때 zustand store에 로그인 아이디를 저장하기 위한 setter
-  const setUsername = useAuthStore(state=>state.setUsername);
+  const setLogin = useAuthStore(state=>state.setLogin);
 
   // 3. 로그인 처리
   const doLogin=async ()=>{
@@ -39,7 +37,8 @@ function MemberLogin() {
     try {
       // 로그인에 성공하면 store에 아이디를 업데이트한 다음 /경로로 이동
       const response = await login(requestForm)
-      setUsername(response.data.username);
+      console.log(response.data);
+      setLogin(response.data);
       setStatus(AsyncStatus.IDLE);
       navigate("/");
       return;

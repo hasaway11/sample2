@@ -4,7 +4,6 @@ import useAuthStore from '../../stores/useAuthStore';
 import React from 'react';
 
 const CommentList =({comments})=>{
-	console.log("CommentList");
 	const loginId = useAuthStore(state=>state.username);
 	const {onRemove} = useComment();
 

@@ -3,20 +3,19 @@ import useAuthStore from "../stores/useAuthStore";
 import { logout } from "../utils/authApi";
 
 function Nav() {
-  const username  = useAuthStore(state=>state.username);
-  const resetUsername  = useAuthStore(state=>state.resetUsername);
+  const {role, setLogout} = useAuthStore();
 
   const doLogout=async (e)=>{
     e.preventDefault();
     try {
       await logout();
-      resetUsername();
+      setLogout();
     } catch(err) {
       console.log(err);
     }
   }
 
-  if(!username) {
+  if(!role) {
     return (
       <nav>
         <ul>
@@ -29,16 +28,28 @@ function Nav() {
       </nav>
     )
   } else {
-    return (
-      <nav>
-        <ul>
-          <li><Link to={"/"} style={{color:'white'}}>HOME</Link></li>
-          <li><Link to={"/member/read"}>내정보</Link></li>
-          <li><Link to={"/post/write"} >글쓰기</Link></li>
-          <li><Link to={"#"} onClick={doLogout}>로그아웃</Link></li>
-        </ul>     
-      </nav>
-    )
+    if(role==='ROLE_USER') {
+      return (
+        <nav>
+          <ul>
+            <li><Link to={"/"} style={{color:'white'}}>HOME</Link></li>
+            <li><Link to={"/member/read"}>내정보</Link></li>
+            <li><Link to={"/post/write"} >글쓰기</Link></li>
+            <li><Link to={"#"} onClick={doLogout}>로그아웃</Link></li>
+          </ul>     
+        </nav>
+      )
+    } else if(role==='ROLE_ADMIN') {
+      return (
+        <nav>
+          <ul>
+            <li><Link to="/" style={{color:'white'}}>HOME</Link></li>
+            <li><Link to="/admin" >ADMIN</Link></li>
+            <li><Link to={"#"} onClick={doLogout}>로그아웃</Link></li>
+          </ul>
+        </nav>
+      )
+    }
   }
 }
 

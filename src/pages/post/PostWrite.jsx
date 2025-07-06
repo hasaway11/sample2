@@ -14,8 +14,6 @@ import { AsyncStatus, modules } from '../../utils/constants';
 
 
 function PostWrite() {
-  console.log("부모 컴포넌트 렌더링...");
-  
   // 1. 필요한 기능 가져오기(작성 상태, 제목 커스텀 훅, 내용 상태, 라우팅)
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const [content, setContent] = useState('');

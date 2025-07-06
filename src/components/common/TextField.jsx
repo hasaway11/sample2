@@ -1,7 +1,6 @@
 import React from "react";
 
 const TextField=({name, type='text', label, value, onChange, onBlur, message})=>{
-  console.log("TextField : ", name);
   return  (
     <div className='mt-3 mb-3'>
       <label htmlFor={name} className='form-label'>{label}:</label>

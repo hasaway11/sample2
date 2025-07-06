@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Alert } from "react-bootstrap";
 import useSWR, { mutate } from "swr";
 
@@ -11,29 +11,29 @@ import { AsyncStatus } from "../../utils/constants";
 import { changeProfile, read } from '../../utils/memberApi';
 
 function MemberRead() {
-  console.log("부모 컴포넌트 렌더링...");
-
-  // 1. 필요한 기능 가져오기
-  const navigate = useNavigate();
+  // 1. 필요한 기능들
   // 비밀번호가 확인되었는 지 여부
   const isPasswordVerified = usePasswordStore(state=>state.isPasswordVerified);
   // 프로필 변경이 가능 : 프로필 커스텀 훅과 변경 작업 상태
   const [status, setStatus] = useState(AsyncStatus.IDLE);
   const vProfile = usePhoto();
-  
-  const {data, error, isLoading } = useSWR(['me'], ()=>read());
+  const navigate = useNavigate();
 
-  // 2. 데이터가 fetch되고 나면 프로필 커스텀 훅 초기화
+  // 2. 훅 조건부 실행
+  //    비밀번호를 확인되지 않는 경우 -> 저 아래 57라인에서 /member/check-password로 이동되지만, 그 전에 useSWR API 호출이 먼저 실행된다
+  //    useSWR 훅은 키를 null로 지정할 경우  훅을 실행하지 않는다
+  const { data, error, isLoading } = useSWR(isPasswordVerified ? ['me'] : null, () => read());
+
+  // 3. 데이터가 fetch되고 나면 프로필 커스텀 훅 초기화
   useEffect(()=>{
     if(data) 
       vProfile.setPhotoUrl(data.profile);
   }, [data]);
 
-
-  // 3. 파생 속성 : 프로필 변경 처리 중
+  // 4. 파생 속성 : 프로필 변경 처리 중
   const isSubmitting = status === AsyncStatus.SUBMITTING;
 
-  // 4. 프로필 변경
+  // 5. 프로필 변경
   const handleChangeProfile=async()=>{
     if(status===AsyncStatus.SUBMITTING) return;
     setStatus(AsyncStatus.SUBMITTING);
@@ -53,8 +53,8 @@ function MemberRead() {
     } 
   }
   
-  // 5. 조건 렌더링 : 비밀번호가 확인되지 않은 경우 비밀번호 확인으로 이동하는 조건 포함
-  if (isPasswordVerified) return <Navigate to="/member/check-password" replace />;
+  // 5. 조건 렌더링
+  if(isPasswordVerified===false) return <Navigate to="/member/check-password" replace />
   if(isLoading)  return <LoadingSpinner />;
   if(error) return <Alert variant='danger'>서버가 응답하지 않습니다</Alert>;
 

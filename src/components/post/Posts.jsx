@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import styles from './Posts.module.css';
 
 function Posts({posts}) {
-  console.log("Posts");
   return (
     <table className='table table-hover'>
       <thead>

@@ -1,9 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 
 const Paginations = ({pagination}) => {
-  console.log("Paginations");
   const {prev,start,end,next,pageno} = pagination;
 
   const navigate = useNavigate();

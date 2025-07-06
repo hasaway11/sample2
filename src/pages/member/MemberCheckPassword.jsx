@@ -11,12 +11,9 @@ import BlockButton from '../../components/common/BlockButton';
 
 
 function MemberCheckPassword() {
-  console.log("부모 컴포넌트 렌더링...");
-  
   // 1. 필요한 기능 가져오기(작성 상태, 비밀번호 확인 여부, 비밀번호 확인 여부 setter, 비밀번호 비밀번호 입력 커스텀 훅, 라우팅)
   const [status, setStatus] = useState(AsyncStatus.IDLE);
-  const isPasswordVerified = usePasswordStore(state=>state.isPasswordVerified);
-  const setPasswordVerified = usePasswordStore(state=>state.setPasswordVerified);
+  const {isPasswordVerified, setPasswordVerified} = usePasswordStore();
   const vPassword = usePassword();
   const navigate = useNavigate();
 
@@ -45,8 +42,7 @@ function MemberCheckPassword() {
     } 
   }
 
-  // 4. 렌더링 조건 : 비밀번호가 확인된 경우 내정보 보기로 이동
-  if (isPasswordVerified) return <Navigate to="/member/read" replace />;
+  if(isPasswordVerified===true) return <Navigate to="/member/read" replace />
 
   return (
     <div>
