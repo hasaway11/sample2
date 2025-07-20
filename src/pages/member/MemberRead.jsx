@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Alert } from "react-bootstrap";
 import useSWR, { mutate } from "swr";
@@ -16,7 +16,8 @@ function MemberRead() {
   const isPasswordVerified = usePasswordStore(state=>state.isPasswordVerified);
   // 프로필 변경이 가능 : 프로필 커스텀 훅과 변경 작업 상태
   const [status, setStatus] = useState(AsyncStatus.IDLE);
-  const vProfile = usePhoto();
+  const profileRef = useRef();
+  const vProfile = usePhoto(profileRef);
   const navigate = useNavigate();
 
   // 2. 훅 조건부 실행
@@ -27,25 +28,25 @@ function MemberRead() {
   // 3. 데이터가 fetch되고 나면 프로필 커스텀 훅 초기화
   useEffect(()=>{
     if(data) 
-      vProfile.setPhotoUrl(data.profile);
+      vProfile.setPreview(data.profile);
   }, [data]);
 
-  // 4. 파생 속성 : 프로필 변경 처리 중
-  const isSubmitting = status === AsyncStatus.SUBMITTING;
-
-  // 5. 프로필 변경
+  // 4. 프로필 변경
   const handleChangeProfile=async()=>{
     if(status===AsyncStatus.SUBMITTING) return;
     setStatus(AsyncStatus.SUBMITTING);
 
-    if(!vProfile.value)
+    if(!vProfile.value) {
+      setStatus(AsyncStatus.IDLE);
       return;
+    }
     try {
       const formData = new FormData();
       formData.append('profile', vProfile.value);
       const {data} = await changeProfile(formData);
       // 부모의 swr 캐시를 갱신
       mutate('me', data, false);
+      vProfile.reset();
       setStatus(AsyncStatus.SUCCESS);
     } catch(err) {
       setStatus(AsyncStatus.FAIL);
@@ -64,8 +65,8 @@ function MemberRead() {
         <tbody>
           <tr>
             <td colSpan={2}>
-              <ProfileField name='photo' label='사진' alt='미리보기' {...vProfile} />
-              <button className='btn btn-primary' onClick={handleChangeProfile} disabled={vProfile.value===null}>{isSubmitting? "프사 변경 중...":"프사 변경"}</button>
+              <ProfileField name='photo' label='사진' alt='미리보기' {...vProfile} ref={profileRef} />
+              <button className='btn btn-primary' onClick={handleChangeProfile} disabled={!vProfile.value}>프사 변경</button>
             </td>
           </tr>
           <tr>

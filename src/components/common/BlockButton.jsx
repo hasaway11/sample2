@@ -1,12 +1,12 @@
-import React from "react";
-
-const BlockButton = ({label, onClick, styleName})=> {
-  const className = `btn btn-outline-${styleName} btn-block`;
+const BlockButton = ({label, onClick, wait})=> {
   return (
     <div className='d-grid gap-3 mt-3 mb-3'>
-      <button type='button' className={className} onClick={onClick}>{label}</button>
+      <button type='button' className='btn btn-outline-primary btn-block' onClick={onClick}>
+        {wait && <span className="spinner-border spinner-border-sm"></span> }
+        {label}
+      </button>
     </div>
   )
 };
 
-export default React.memo(BlockButton);
+export default BlockButton;

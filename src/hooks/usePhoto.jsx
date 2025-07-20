@@ -1,23 +1,23 @@
-import  { useCallback, useState } from 'react'
+import  { useState } from 'react'
 
-function usePhoto() {
+function usePhoto(ref) {
   const [value, setValue] = useState(null);
-  const [photoUrl, setPhotoUrl] = useState(null);
+  const [preview, setPreview] = useState(null);
 
-  const onChange = useCallback((e)=>{
+  const onChange = (e) => {
+    console.log(ref);
     const file = e.target.files[0];
     setValue(file);
+    setPreview(URL.createObjectURL(file));
+  };
 
-    if(file) {
-      const reader = new FileReader();
-      reader.onload = ()=>setPhotoUrl(reader.result);
-      reader.readAsDataURL(file);
-    } else {
-      setPhotoUrl(null);
-    }
-  }, []);
+  const reset=()=>{
+    console.log(ref);
+    setValue(null);
+    ref.current.value="";
+  };
 
-  return {value, photoUrl, onChange, setPhotoUrl};
+  return { value, preview, onChange, reset, setPreview};
 }
 
 

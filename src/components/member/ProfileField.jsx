@@ -1,15 +1,15 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-function ProfileField({photoUrl, alt, name, label, onChange}) {
+const ProfileField=forwardRef(({preview, alt, name, label, onChange}, ref)=>{
   return (
      <>
-      {photoUrl && <img src={photoUrl} style={{height:'200px', objectFit:'cover'}} alt={alt} />}
+      {preview && <img src={preview} style={{height:'200px', objectFit:'cover'}} alt={alt} />}
       <div className='mb-3 mt-3'>
         <label htmlFor={name} className='form-label'>{label}:</label>
-        <input type='file' className='form-control' name={name} onChange={onChange} />
+        <input type='file' className='form-control' name={name} onChange={onChange} ref={ref} />
       </div>
     </>
   )
-}
+})
 
-export default React.memo(ProfileField);
+export default ProfileField;

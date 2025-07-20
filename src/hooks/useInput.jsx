@@ -1,20 +1,32 @@
-import  { useCallback, useState } from 'react'
+import { useState } from "react";
 
-function useInput() {
-  const [value, setValue] = useState('');
+function useInput(ref, required=true, pattern=null, api=null) {
   const [message, setMessage] = useState('');
 
-  const onChange = useCallback(e=>setValue(e.target.value),[]);
-
-  const onBlur = useCallback(()=>{
+  const check = async ()=>{
+    const value = ref.current?.value || '';
     setMessage('');
-    if(value!=='')
-      return true;
-    setMessage('필수 입력입니다');
-    return false;
-  },[value]);
+    if(required && value==='') {
+      setMessage("필수입력입니다");
+      return false;
+    }
+    if(pattern && !pattern.regexp.test(value)) {
+      setMessage(pattern.message);
+      return false;
+    }
+    if(api!=null) {
+      try {
+        await api.method(value);
+        return true;
+      } catch (err) {
+        setMessage(api.message);
+        return false;
+      }
+    }
+    return true
+  };
 
-  return {value, message, onBlur, onChange, setValue};
+  return {message, check};
 }
 
 export default useInput

@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Alert } from "react-bootstrap";
 
+import useInput from "../../hooks/useInput";
 import TextField from "../../components/common/TextField";
 import BlockButton from "../../components/common/BlockButton";
 import { AsyncStatus } from "../../utils/constants";
-import useUsername from "../../hooks/useUsername";
 import { resetPassword } from "../../utils/memberApi";
 
 function MemberResetPassword() {
   const [status, setStatus] = useState(AsyncStatus.IDLE);
-  const vUsername = useUsername();
+  const usernameRef = useRef();
+  const vUsername = useInput(usernameRef);
 
   const handleResetUsername=async ()=>{
     if(status===AsyncStatus.SUBMITTING) return;
     setStatus(AsyncStatus.SUBMITTING);
 
-    if (!vUsername.onBlur()) {
+    if (!vUsername.check()) {
       setStatus(AsyncStatus.IDLE);
       return;
     }
@@ -36,7 +37,7 @@ function MemberResetPassword() {
       {status===AsyncStatus.SUCCESS &&  <Alert variant='success'>임시비밀번호를 가입 이메일로 보냈습니다</Alert>}
       {status===AsyncStatus.FAIL && <Alert variant='danger'>사용자 정보를 확인하지 못했습니다</Alert>}
       <TextField label='아이디' name='username' {...vUsername} />
-      <BlockButton label={status===AsyncStatus.SUBMITTING ? "찾는 중...":"비밀번호 찾기"} onClick={handleResetUsername} styleName='danger' disabled={status===AsyncStatus.SUBMITTING} />
+      <BlockButton label="비밀번호 찾기" onClick={handleResetUsername} wait={status===AsyncStatus.SUBMITTING} />
     </div>
   )
 }

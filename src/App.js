@@ -8,6 +8,7 @@ import useAuthStore from './stores/useAuthStore';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import usePasswordStore from './stores/usePasswordStore';
+import { SWRConfig } from 'swr';
 
 function App() {
   const location = useLocation();
@@ -27,7 +28,9 @@ function App() {
       <main>
         <Aside />
         <section>
-          <AppRoutes />
+          <SWRConfig value={{ revalidateOnFocus: false, shouldRetryOnError: false }}>
+            <AppRoutes />
+          </SWRConfig>
         </section>
         <Aside />
       </main>

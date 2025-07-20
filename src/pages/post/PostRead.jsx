@@ -19,7 +19,7 @@ function PostRead() {
   // 2. pno 파라미터를 읽어와 post를 fetch
   const [params] = useSearchParams();
   let pno = convertToInt(params.get('pno'), null);
-  const {data, error, isLoading } = useSWR(['pno', pno], ()=>read(pno), { revalidateOnFocus: false} );
+  const {data, error, isLoading } = useSWR(['pno', pno], ()=>read(pno));
 
   // 3. 로그인 여부 및 작성자 여부를 나타내는 파생 상태(derived state)
   const isLogin = username!==undefined && username!==null;
