@@ -39,7 +39,6 @@ function MemberLogin() {
     try {
       // 로그인에 성공하면 store에 아이디를 업데이트한 다음 /경로로 이동
       const response = await login(requestForm);
-      console.log("성공")
       setLogin(response.data);
       setStatus(AsyncStatus.IDLE);
       navigate("/");

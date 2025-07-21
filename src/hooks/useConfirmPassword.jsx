@@ -6,6 +6,7 @@ function useConfirmPassword(ref, passwordRef) {
   const check=()=>{
     setMessage('');
     const value = ref.current?.value || '';
+
     if(value==='') {
       setMessage('확인을 위해 비밀번호를 다시 입력해주세요');
       return false;

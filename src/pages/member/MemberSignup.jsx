@@ -9,7 +9,6 @@ import useConfirmPassword from "../../hooks/useConfirmPassword";
 import usePhoto from "../../hooks/usePhoto";
 import {idAvailable, signup} from '../../utils/memberApi';
 import { AsyncStatus, Patterns } from "../../utils/constants";
-import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 function MemberSignup() {
   // 1. 필요한 기능 가져오기(작성 상태, 프로필/아이디/비밀번호/비밀번호 확인/이메일 커스텀 훅)
@@ -23,7 +22,7 @@ function MemberSignup() {
   const vUsername = useInput(usernameRef, false, Patterns.USERNAME , {method:idAvailable, message:"사용중인 아이디입니다" });
   const vPassword = useInput(passwordRef, false, Patterns.PASSWORD);
   const vEmail = useInput(emailRef, false, Patterns.EMAIL);
-  const vConfirmPassword = useConfirmPassword(confirmPasswordRef,  vPassword);
+  const vConfirmPassword = useConfirmPassword(confirmPasswordRef,  passwordRef);
 
   // 2. 가입 처리(상태 확인 및 변경, 검증, formData 생성 및 회원 가입)
   // - useCallback을 사용하지 않은 이유
@@ -57,8 +56,6 @@ function MemberSignup() {
       console.log(err);
     }
   };
-
-  if(status===AsyncStatus.SUBMITTING) return <LoadingSpinner />
 
   // 3. 가입 성공하면 메시지 출력 or 가입 화면
   if(status===AsyncStatus.SUCCESS) {
